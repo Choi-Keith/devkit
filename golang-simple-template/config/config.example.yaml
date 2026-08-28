@@ -1,0 +1,39 @@
+# 服务配置模板
+# 使用前复制为 config/config.yaml:cp config/config.example.yaml config/config.yaml
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+  production: false
+
+database:
+  driver: "postgres" # postgres, mysql
+  host: "localhost"
+  port: 5432
+  username: "postgres"
+  password: "postgres"
+  dbname: "app"
+  sslMode: "disable"
+  maxOpenConns: 25
+  maxIdleConns: 10
+  connMaxLifetime: 30 # 分钟
+  connMaxIdleTime: 10 # 分钟
+  logLevel: "warn"    # silent, error, warn, info
+  slowThreshold: 200  # 慢查询阈值(毫秒)
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
+  poolSize: 10
+  minIdleConns: 5
+
+log:
+  level: "info"        # debug, info, warn, error
+  format: "console"    # json, console
+  outputPath: "stdout" # stdout, stderr, 或文件路径(如 logs/app.log)
+  maxSize: 100         # 单个日志文件最大 MB
+  maxBackups: 3
+  maxAge: 7            # 保留天数
+  compress: false

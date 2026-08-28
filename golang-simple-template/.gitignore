@@ -1,0 +1,5 @@
+bin/
+logs/
+coverage.out
+config/config.local.yaml
+.DS_Store

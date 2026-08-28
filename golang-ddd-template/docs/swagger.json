@@ -1,0 +1,578 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "基于 golang-common 的 DDD 脚手架服务",
+        "title": "golang-ddd-template API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/orders": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "分页查询订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "页码,从 1 开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 20,
+                        "description": "每页数量,最大 100",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderListEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "为指定用户创建一个待支付订单,订单号由服务端生成",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "创建订单",
+                "parameters": [
+                    {
+                        "description": "创建订单请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/order.CreateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "查询订单详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "订单 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    },
+                    "404": {
+                        "description": "订单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}/cancel": {
+            "post": {
+                "description": "仅待支付订单可以取消",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "取消订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "订单 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取消成功",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    },
+                    "404": {
+                        "description": "订单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    },
+                    "409": {
+                        "description": "订单状态不允许取消",
+                        "schema": {
+                            "$ref": "#/definitions/order.ErrorEnvelope"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "分页查询用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "页码,从 1 开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 20,
+                        "description": "每页数量,最大 100",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserListEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "创建一个新用户账号",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "注册用户",
+                "parameters": [
+                    {
+                        "description": "注册请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.RegisterUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    },
+                    "409": {
+                        "description": "邮箱已被注册",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "查询用户详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "用户 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "用户 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "删除成功"
+                    },
+                    "400": {
+                        "description": "参数无效",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorEnvelope"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "order.CreateOrderRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "userId"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "金额,单位:分",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 199900
+                },
+                "userId": {
+                    "description": "下单用户 ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                }
+            }
+        },
+        "order.ErrorEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 20100
+                },
+                "message": {
+                    "type": "string",
+                    "example": "订单不存在"
+                }
+            }
+        },
+        "order.OrderEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/order.OrderResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "order.OrderListData": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order.OrderResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "order.OrderListEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/order.OrderListData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "order.OrderResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 199900
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2026-08-27T08:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "orderNo": {
+                    "type": "string",
+                    "example": "O17562624000000000000123"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "pending"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "user.ErrorEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "message": {
+                    "type": "string",
+                    "example": "用户不存在"
+                }
+            }
+        },
+        "user.RegisterUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "name": {
+                    "description": "昵称",
+                    "type": "string",
+                    "example": "Alice"
+                },
+                "password": {
+                    "description": "密码(至少 8 位)",
+                    "type": "string",
+                    "minLength": 8,
+                    "example": "P@ssw0rd123"
+                }
+            }
+        },
+        "user.UserEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/user.UserResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "user.UserListData": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user.UserResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "user.UserListEnvelope": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/user.UserListData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "user.UserResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2026-08-27T08:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Alice"
+                }
+            }
+        }
+    }
+}

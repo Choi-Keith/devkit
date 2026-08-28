@@ -1,0 +1,31 @@
+server:
+  host: 0.0.0.0
+  port: 8081
+  readTimeout: 30s
+  writeTimeout: 30m
+  shutdownTimeout: 30s
+  production: false
+
+log:
+  level: info        # debug, info, warn, error
+  format: console    # json, console
+  outputPath: stdout # stdout, stderr, or file path
+  maxSize: 100
+  maxBackups: 3
+  maxAge: 7
+  compress: false
+
+database:
+  driver: mysql # postgres, mysql
+  host: localhost
+  port: 3307
+  username: root
+  password: root
+  dbname: app
+  sslMode: disable
+  maxOpenConns: 25
+  maxIdleConns: 10
+  connMaxLifetime: 30 # minutes
+  connMaxIdleTime: 10 # minutes
+  logLevel: warn
+  slowThreshold: 200 # ms
