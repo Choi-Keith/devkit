@@ -32,6 +32,12 @@ var All = []Template{
 		Desc:   "Go DDD 分层架构模板(configs / deployments / internal 分层)",
 	},
 	{
+		Name:   "golang-feature-mvc",
+		Subdir: "golang-feature-mvc-template",
+		Lang:   "Go",
+		Desc:   "Go Feature MVC 模板(按 feature 纵向切分 + GORM + Redis + JWT + Swagger)",
+	},
+	{
 		Name:   "golang-simple",
 		Subdir: "golang-simple-template",
 		Lang:   "Go",

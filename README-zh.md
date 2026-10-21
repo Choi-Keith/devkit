@@ -9,6 +9,7 @@
 | 名称 | 语言 | 说明 |
 | --- | --- | --- |
 | `golang-ddd` | Go | Go DDD 分层架构模板（configs / deployments / internal 分层） |
+| `golang-feature-mvc` | Go | Go Feature MVC 模板（按 feature 纵向切分 + GORM + Redis + JWT + Swagger） |
 | `golang-simple` | Go | Go 轻量级单体服务模板 |
 | `nestjs-simple` | TypeScript | NestJS 11 模板（TypeORM + Redis + JWT + RBAC） |
 | `python-fastapi` | Python | FastAPI 模板（Alembic 迁移 + uv 依赖管理） |
@@ -63,6 +64,9 @@ devkit new golang-ddd my-service --module github.com/acme/my-service
 # Go 模板
 cd my-service && go mod tidy && go run ./cmd/...
 
+# golang-feature-mvc 依赖 MySQL + Redis,先启动依赖
+cd my-service && docker compose -f deployments/docker-compose.yaml up -d && make run
+
 # NestJS 模板
 cd my-service && pnpm install && pnpm start:dev
 
@@ -74,11 +78,12 @@ cd my-service && uv sync && uv run python -m src.main
 
 ```
 .
-├── cmd/devkit/              # devkit CLI 源码
-├── golang-ddd-template/     # Go DDD 模板
-├── golang-simple-template/  # Go 单体模板
-├── nestjs-simple-template/  # NestJS 模板
-└── python-fastapi-template/ # FastAPI 模板
+├── cmd/devkit/                  # devkit CLI 源码
+├── golang-ddd-template/         # Go DDD 模板
+├── golang-feature-mvc-template/ # Go Feature MVC 模板
+├── golang-simple-template/      # Go 单体模板
+├── nestjs-simple-template/      # NestJS 模板
+└── python-fastapi-template/     # FastAPI 模板
 ```
 
 新增模板:在仓库根目录新建模板目录,并在 `cmd/devkit/internal/templates/templates.go` 的 `All` 中注册即可。

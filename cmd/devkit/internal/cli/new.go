@@ -178,6 +178,12 @@ func validateProjectName(name string) error {
 }
 
 func nextSteps(t templates.Template) string {
+	// This template needs MySQL and Redis before it can start.
+	if t.Name == "golang-feature-mvc" {
+		return "  docker compose -f deployments/docker-compose.yaml up -d\n" +
+			"  go mod tidy\n" +
+			"  make run   # or go run ./cmd/server\n"
+	}
 	switch t.Lang {
 	case "Go":
 		return "  go mod tidy\n  go run ./cmd/...\n"

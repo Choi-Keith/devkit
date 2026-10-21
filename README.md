@@ -9,6 +9,7 @@ A project scaffold generator. Ships with several backend project templates and c
 | Name | Language | Description |
 | --- | --- | --- |
 | `golang-ddd` | Go | Go DDD layered architecture template (configs / deployments / internal layers) |
+| `golang-feature-mvc` | Go | Go Feature MVC template (feature-sliced modules + GORM + Redis + JWT + Swagger) |
 | `golang-simple` | Go | Lightweight Go monolith service template |
 | `nestjs-simple` | TypeScript | NestJS 11 template (TypeORM + Redis + JWT + RBAC) |
 | `python-fastapi` | Python | FastAPI template (Alembic migrations + uv dependency management) |
@@ -63,6 +64,9 @@ Common flags for `devkit new`:
 # Go templates
 cd my-service && go mod tidy && go run ./cmd/...
 
+# golang-feature-mvc needs MySQL + Redis; start them first
+cd my-service && docker compose -f deployments/docker-compose.yaml up -d && make run
+
 # NestJS template
 cd my-service && pnpm install && pnpm start:dev
 
@@ -74,11 +78,12 @@ cd my-service && uv sync && uv run python -m src.main
 
 ```
 .
-├── cmd/devkit/              # devkit CLI source
-├── golang-ddd-template/     # Go DDD template
-├── golang-simple-template/  # Go monolith template
-├── nestjs-simple-template/  # NestJS template
-└── python-fastapi-template/ # FastAPI template
+├── cmd/devkit/                  # devkit CLI source
+├── golang-ddd-template/         # Go DDD template
+├── golang-feature-mvc-template/ # Go Feature MVC template
+├── golang-simple-template/      # Go monolith template
+├── nestjs-simple-template/      # NestJS template
+└── python-fastapi-template/     # FastAPI template
 ```
 
 To add a template: create a template directory at the repository root and register it in `All` inside `cmd/devkit/internal/templates/templates.go`.
