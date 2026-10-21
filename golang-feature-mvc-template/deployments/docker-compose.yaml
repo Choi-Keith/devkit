@@ -1,0 +1,37 @@
+# 显式指定项目名,避免与兄弟模板(如 golang-ddd-template)的
+# deployments/docker-compose.yaml 因默认项目名相同而互相覆盖。
+name: golang-feature-mvc-template
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: golang-feature-mvc-template-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+    ports:
+      - "3308:3306" # host 3306/3307 may be taken by other local instances
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: golang-feature-mvc-template-redis
+    ports:
+      - "6380:6379" # host 6379 may be taken by other local instances
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  mysql-data:
+  redis-data:

@@ -1,0 +1,58 @@
+server:
+  host: 0.0.0.0
+  port: 8082
+  readTimeout: 30s
+  writeTimeout: 30m
+  shutdownTimeout: 30s
+  production: false
+
+log:
+  level: info        # debug, info, warn, error
+  format: console    # json, console
+  outputPath: stdout # stdout, stderr, or file path
+  maxSize: 100
+  maxBackups: 3
+  maxAge: 7
+  compress: false
+
+database:
+  # ---- MySQL(默认)----
+  driver: mysql
+  host: localhost
+  port: 3308
+  username: root
+  password: root
+  dbname: app
+  # ---- PostgreSQL(把上面 MySQL 段换成下面这段即可)----
+  # driver: postgres
+  # host: localhost
+  # port: 5432
+  # username: postgres
+  # password: postgres
+  # dbname: app
+  # sslMode: disable
+  sslMode: disable
+  maxOpenConns: 25
+  maxIdleConns: 10
+  connMaxLifetime: 30 # minutes
+  connMaxIdleTime: 10 # minutes
+  logLevel: warn
+  slowThreshold: 200 # ms
+
+redis:
+  host: localhost
+  port: 6380
+  password: ""
+  db: 0
+  poolSize: 10
+  minIdleConns: 5
+  dialTimeout: 5s
+  readTimeout: 3s
+  writeTimeout: 3s
+
+jwt:
+  # 生产环境务必用环境变量覆盖:JWT_SECRET=<strong-random-secret>
+  secret: dev-only-secret-change-me
+  issuer: golang-feature-mvc-template
+  accessExpiration: 2h
+  refreshExpiration: 168h

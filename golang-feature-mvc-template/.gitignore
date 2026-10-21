@@ -1,0 +1,15 @@
+bin/
+coverage.out
+*.log
+.DS_Store
+.vscode/
+.idea/
+configs/config.yaml
+configs/config.prod.yaml
+
+## Backup ###
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
